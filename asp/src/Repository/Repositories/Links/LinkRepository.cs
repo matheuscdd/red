@@ -58,8 +58,13 @@ public class LinkRepository: ILinkRepository
         throw new NotImplementedException();
     }
 
-    public Task<Link?> UpdateAsync(Link entityStorage, Link entityRequest, CancellationToken cancellationToken = default)
+    public async Task<Link?> UpdateAsync(Link entityStorage, Link entityRequest, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        entityStorage.SetDestination(entityRequest.Destination);
+        entityStorage.SetMask(entityRequest.Mask);
+
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return entityStorage;
     }
 }

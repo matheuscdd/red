@@ -5,6 +5,7 @@ using Application.Contexts.Links.Queries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Application.Contexts.Links.Commands.Update;
 
 namespace Api.Controllers;
 
@@ -52,6 +53,21 @@ public class LinkController: ControllerBase
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
         var response = await _mediator.Send(new GetByIdLinkQuery{Id = id, UserId = userId});
+        return Ok(response);
+    }
+
+    [HttpPut("{id:guid}")]
+    [Authorize]
+    public async Task<IActionResult> Update(
+        [FromRoute] Guid id,
+        [FromBody] UpdateLinkCommand updateLinkCommand
+    )
+    {
+        updateLinkCommand.Id = id;
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        updateLinkCommand.UserId = userId;
+        var response = await _mediator.Send(updateLinkCommand);
+        _logger.LogInformation($"Link {id} Updated - UserId: {userId}");
         return Ok(response);
     }
 

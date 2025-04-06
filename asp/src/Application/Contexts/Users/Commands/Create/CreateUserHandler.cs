@@ -37,7 +37,6 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserDto>
         {
             throw new ValidationCustomException(string.Join(";", errors!));
         }
-        entity.Id = entity.Id.ToUpper();
         var dto = entity.Adapt<UserDto>();
         return dto;
     }
