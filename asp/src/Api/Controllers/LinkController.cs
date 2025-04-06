@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Application.Contexts.Links.Commands.Update;
+using Application.Contexts.Links.Commands.Delete;
 
 namespace Api.Controllers;
 
@@ -24,7 +25,7 @@ public class LinkController: ControllerBase
 
     [HttpPost("private")]
     [Authorize]
-    public async Task<IActionResult> CreateWithUser(
+    public async Task<IActionResult> CreatePrivate(
         [FromBody] CreateLinkCommand createLinkCommand
     )
     {
@@ -32,12 +33,11 @@ public class LinkController: ControllerBase
         createLinkCommand.UserId = userId;
         var response = await _mediator.Send(createLinkCommand);
         _logger.LogInformation($"Link Created - UserId: {userId}");
-        // TODO - verificar o motivo do username vir null
         return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
     }
 
     [HttpPost("public")]
-    public async Task<IActionResult> CreateWithoutUser(
+    public async Task<IActionResult> CreatePublic(
         [FromBody] CreateLinkCommand createLinkCommand
     )
     {
@@ -47,7 +47,7 @@ public class LinkController: ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("private/{id:guid}")]
     [Authorize]
     public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
@@ -56,7 +56,16 @@ public class LinkController: ControllerBase
         return Ok(response);
     }
 
-    [HttpPut("{id:guid}")]
+    [HttpDelete("private/{id:guid}")]
+    [Authorize]
+    public async Task<IActionResult> Delete([FromRoute] Guid id)
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        await _mediator.Send(new DeleteLinkCommand{Id = id, UserId = userId});
+        return NoContent();
+    }
+
+    [HttpPut("private/{id:guid}")]
     [Authorize]
     public async Task<IActionResult> Update(
         [FromRoute] Guid id,
@@ -71,7 +80,7 @@ public class LinkController: ControllerBase
         return Ok(response);
     }
 
-    [HttpGet]
+    [HttpGet("private")]
     [Authorize]
     public async Task<IActionResult> GetAllByUser()
     {

@@ -33,9 +33,11 @@ public class LinkRepository: ILinkRepository
         return entityRequest;
     }
 
-    public Task<Link?> DeleteAsync(Link entity, CancellationToken cancellationToken = default)
+    public async Task<Link?> DeleteAsync(Link entity, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        _context.Links.Remove(entity);
+        await _context.SaveChangesAsync(cancellationToken);
+        return entity;
     }
 
     public async Task<List<Link>> GetByUserAsync(string userId, CancellationToken cancellationToken = default)
