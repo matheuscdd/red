@@ -14,6 +14,7 @@ public class ApplicationDbContext(DbContextOptions dbContextOptions) : IdentityD
     protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.Entity<Link>().HasIndex(x => new { x.UserId, x.Mask }).IsUnique();
 
             var roles = new List<IdentityRole>
             {

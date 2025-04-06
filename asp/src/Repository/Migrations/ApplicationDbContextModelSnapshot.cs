@@ -80,15 +80,16 @@ namespace Repository.Migrations
 
                     b.Property<string>("Mask")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId", "Mask")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Links");
                 });
@@ -187,13 +188,13 @@ namespace Repository.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fc6b72c8-96dc-43f6-b26c-124d2ad0e4ce",
+                            Id = "def07449-3e35-436b-8470-8c530dd31e4e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "6f1f5feb-f990-4bb0-a910-34c748f31755",
+                            Id = "a0dd7a07-cf14-4897-940c-11a6421ef2fa",
                             Name = "Common",
                             NormalizedName = "COMMON"
                         });
@@ -320,9 +321,7 @@ namespace Repository.Migrations
                 {
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany("Links")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });

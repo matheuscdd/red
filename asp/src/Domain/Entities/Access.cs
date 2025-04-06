@@ -5,9 +5,8 @@ using System.Net;
 namespace Domain.Entities;
 
 [Table("Accesses")]
-public class Access
+public class Access : Entity
 {
-    [Key]
     public Guid Id { get; private set; }
     public IPAddress Ip { get; private set; }
     public string Country { get; private set; }
