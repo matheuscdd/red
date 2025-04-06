@@ -34,6 +34,7 @@ public class CreateLinkHandler : IRequestHandler<CreateLinkCommand, LinkDto>
 
         var entity = new Link(request.Mask, request.Destination, request.UserId);
         entity = await _linkRepository.CreateAsync(entity, cancellationToken);
+        entity = await _linkRepository.GetByIdAndUserAsync(entity.Id, entity.UserId, cancellationToken);
         var dto = entity.Adapt<LinkDto>();
         return dto;
     }

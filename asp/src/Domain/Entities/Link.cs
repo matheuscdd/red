@@ -9,7 +9,7 @@ public class Link : Entity
     public string Mask { get; private set; }
     public Uri Destination { get; private set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public string UserId { get; set; } // need to do this because identity
+    public string? UserId { get; set; } // need to do this because identity
     public User? User { get; set; }
 
     protected Link() {}
@@ -21,7 +21,6 @@ public class Link : Entity
     {
         validateMask(mask);
         validateDestination(destination);
-        validateUserId(userId);
 
         SetMask(mask);
         SetDestination(destination);
@@ -42,8 +41,7 @@ public class Link : Entity
 
     public void SetUserId(string? userId)
     {
-        validateUserId(userId);
-        UserId = userId!;
+        UserId = userId;
     }
 
     private void validateMask(string? mask)
@@ -51,13 +49,6 @@ public class Link : Entity
         const string name = nameof(Mask);
         validateEmpty(mask, name);
         validateLength(mask!, name, 1, 150);
-    }
-
-    private void validateUserId(string? userId)
-    {
-        const string name = nameof(UserId);
-        validateEmpty(userId, name);
-        validateGuid(userId!, name);
     }
 
     private void validateDestination(Uri? destination)

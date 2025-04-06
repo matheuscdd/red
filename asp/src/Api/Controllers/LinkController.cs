@@ -1,5 +1,7 @@
 using System.Security.Claims;
 using Application.Contexts.Links.Commands.Create;
+using Application.Contexts.Links.Queries.GetByUser;
+using Application.Contexts.Links.Queries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +21,9 @@ public class LinkController: ControllerBase
         _mediator = mediator;
     }
 
-    [HttpPost]
+    [HttpPost("private")]
     [Authorize]
-    public async Task<IActionResult> Create(
+    public async Task<IActionResult> CreateWithUser(
         [FromBody] CreateLinkCommand createLinkCommand
     )
     {
@@ -29,6 +31,36 @@ public class LinkController: ControllerBase
         createLinkCommand.UserId = userId;
         var response = await _mediator.Send(createLinkCommand);
         _logger.LogInformation($"Link Created - UserId: {userId}");
-        return Ok(); // TODO - trocar quando tiver create
+        // TODO - verificar o motivo do username vir null
+        return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
+    }
+
+    [HttpPost("public")]
+    public async Task<IActionResult> CreateWithoutUser(
+        [FromBody] CreateLinkCommand createLinkCommand
+    )
+    {
+        createLinkCommand.UserId = null;
+        var response = await _mediator.Send(createLinkCommand);
+        _logger.LogInformation($"Link Created - Public");
+        return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
+    }
+
+    [HttpGet("{id:guid}")]
+    [Authorize]
+    public async Task<IActionResult> GetById([FromRoute] Guid id)
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        var response = await _mediator.Send(new GetByIdLinkQuery{Id = id, UserId = userId});
+        return Ok(response);
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> GetAllByUser()
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        var response = await _mediator.Send(new GetByUserLinkQuery{UserId = userId});
+        return Ok(response);
     }
 }

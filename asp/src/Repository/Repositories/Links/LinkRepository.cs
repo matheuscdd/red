@@ -14,14 +14,16 @@ public class LinkRepository: ILinkRepository
         _context = context;
     }
 
-    public Task<bool> CheckIdExistsAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<bool> CheckIdExistsAsync(Guid id, string userId, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await _context.Links
+            .AnyAsync(el => el.Id == id && el.UserId == userId, cancellationToken);
     }
 
     public async Task<bool> CheckMaskExistsAsync(string mask, string userId, CancellationToken cancellationToken = default)
     {
-        return await _context.Links.AnyAsync(el => el.Mask == mask && el.UserId == userId, cancellationToken);
+        return await _context.Links
+            .AnyAsync(el => el.Mask == mask && el.UserId == userId, cancellationToken);
     }
 
     public async Task<Link> CreateAsync(Link entityRequest, CancellationToken cancellationToken = default)
@@ -36,14 +38,19 @@ public class LinkRepository: ILinkRepository
         throw new NotImplementedException();
     }
 
-    public Task<List<Link>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<List<Link>> GetByUserAsync(string userId, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await _context.Links
+            .Include(el => el.User)
+            .Where(el => el.UserId == userId)
+            .ToListAsync(cancellationToken);
     }
 
-    public Task<Link?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Link?> GetByIdAndUserAsync(Guid id, string? userId, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await _context.Links
+            .Include(el => el.User)
+            .FirstOrDefaultAsync(el => el.Id == id && el.UserId == userId, cancellationToken);
     }
 
     public Task<Link?> GetByMaskAsync(string mask, CancellationToken cancellationToken = default)

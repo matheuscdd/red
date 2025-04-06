@@ -163,10 +163,10 @@ namespace Repository.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Mask = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Mask = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Destination = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -175,8 +175,7 @@ namespace Repository.Migrations
                         name: "FK_Links_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -209,8 +208,8 @@ namespace Repository.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "6f1f5feb-f990-4bb0-a910-34c748f31755", null, "Common", "COMMON" },
-                    { "fc6b72c8-96dc-43f6-b26c-124d2ad0e4ce", null, "Admin", "ADMIN" }
+                    { "a0dd7a07-cf14-4897-940c-11a6421ef2fa", null, "Common", "COMMON" },
+                    { "def07449-3e35-436b-8470-8c530dd31e4e", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -258,9 +257,11 @@ namespace Repository.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Links_UserId",
+                name: "IX_Links_UserId_Mask",
                 table: "Links",
-                column: "UserId");
+                columns: new[] { "UserId", "Mask" },
+                unique: true,
+                filter: "[UserId] IS NOT NULL");
         }
 
         /// <inheritdoc />

@@ -2,6 +2,7 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Repository.Conversions.Users;
 
 namespace Repository.Context;
 
@@ -30,5 +31,7 @@ public class ApplicationDbContext(DbContextOptions dbContextOptions) : IdentityD
                 }
             };
             builder.Entity<IdentityRole>().HasData(roles);
+            builder.Entity<User>().Property(u => u.Id)
+                .HasConversion(new UpperCaseStringConverter());
         }
 }
