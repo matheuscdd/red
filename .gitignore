@@ -52,3 +52,12 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+.env
+/signoz/
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+asp/.tools
