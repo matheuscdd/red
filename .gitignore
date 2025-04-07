@@ -61,3 +61,4 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 asp/.tools
+*.mmdb

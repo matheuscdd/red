@@ -25,7 +25,7 @@ public class UserController: ControllerBase
     }
 
     [HttpGet]
-    // [Authorize]
+    [Authorize]
     public async Task<IActionResult> GetAll()
     {
         var response = await _mediator.Send(new GetAllUserQuery());

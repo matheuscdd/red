@@ -82,7 +82,7 @@ public class LinkController: ControllerBase
 
     [HttpGet("private")]
     [Authorize]
-    public async Task<IActionResult> GetAllByUser()
+    public async Task<IActionResult> GetByUser()
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
         var response = await _mediator.Send(new GetByUserLinkQuery{UserId = userId});

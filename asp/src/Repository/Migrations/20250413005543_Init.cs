@@ -184,11 +184,12 @@ namespace Repository.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Ip = table.Column<string>(type: "nvarchar(45)", nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Region = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Region = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Browser = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OS = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Origin = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LinkId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -208,8 +209,8 @@ namespace Repository.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "a0dd7a07-cf14-4897-940c-11a6421ef2fa", null, "Common", "COMMON" },
-                    { "def07449-3e35-436b-8470-8c530dd31e4e", null, "Admin", "ADMIN" }
+                    { "81343a0e-9f4f-4b7d-8540-b14e5e07a3d6", null, "Admin", "ADMIN" },
+                    { "f109eb6c-14c7-4954-beb6-98183613deca", null, "Common", "COMMON" }
                 });
 
             migrationBuilder.CreateIndex(

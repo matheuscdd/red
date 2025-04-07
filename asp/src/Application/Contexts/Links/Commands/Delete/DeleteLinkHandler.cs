@@ -24,7 +24,7 @@ public class DeleteLinkHandler : IRequestHandler<DeleteLinkCommand>
         CancellationToken cancellationToken
     )
     {
-        var entity = await _linkRepository.GetByIdAndUserAsync(request.Id, request.UserId, cancellationToken);
+        var entity = await _linkRepository.GetByIdAndUserIdAsync(request.Id, request.UserId, cancellationToken);
         if (entity == null)
         {
             throw new NotFoundCustomException("Link not found");

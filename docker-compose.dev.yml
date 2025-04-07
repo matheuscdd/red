@@ -6,9 +6,9 @@ services:
       dockerfile: Dockerfile.aux
     image: aux
     environment:
-      Host: "${Host}"
-      SecretKey: "${SecretKey}"
-      DefaultConnection: "${DefaultConnection}"
+      HOST: "${HOST}"
+      SECRET_KEY: "${SECRET_KEY}"
+      SQL_SERVER_URL: "${SQL_SERVER_URL}"
     networks:
       - net
     depends_on:
@@ -19,16 +19,18 @@ services:
       context: ./asp
       dockerfile: Dockerfile.dev
       args:
-        Host: "${Host}"
-        SecretKey: "${SecretKey}"
-        DefaultConnection: "${DefaultConnection}"
+        HOST: "${HOST}"
+        SECRET_KEY: "${SECRET_KEY}"
+        SQL_SERVER_URL: "${SQL_SERVER_URL}"
+        GEO_IP_PATH: "${GEO_IP_PATH}"
     image: asp
     ports:
       - "8000:8000"
     environment:
-      Host: "${Host}"
-      SecretKey: "${SecretKey}"
-      DefaultConnection: "${DefaultConnection}"
+      HOST: "${HOST}"
+      SECRET_KEY: "${SECRET_KEY}"
+      SQL_SERVER_URL: "${SQL_SERVER_URL}"
+      GEO_IP_PATH: "${GEO_IP_PATH}"
     networks:
       - net
     depends_on:

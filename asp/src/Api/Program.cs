@@ -10,23 +10,26 @@ using IoC.Exceptions;
 using IoC.Controllers;
 using IoC.Repositories;
 using IoC.Database;
+using IoC.IP;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // carrega variáveis de ambiente
-var connectString = Environment.GetEnvironmentVariable("DefaultConnection") ?? throw new Exception("Connection_String cannot be empty");
-var host = Environment.GetEnvironmentVariable("Host") ?? throw new Exception("Host cannot be empty");
-var secretKey = Environment.GetEnvironmentVariable("SecretKey") ?? throw new Exception("SecretKey cannot be empty");
+var sqlServerUrl = Environment.GetEnvironmentVariable("SQL_SERVER_URL") ?? throw new Exception("SQL_SERVER_URL cannot be empty");
+var geoIpPath = Environment.GetEnvironmentVariable("GEO_IP_PATH") ?? throw new Exception("GEO_IP_PATH cannot be empty");
+var host = Environment.GetEnvironmentVariable("HOST") ?? throw new Exception("HOST cannot be empty");
+var secretKey = Environment.GetEnvironmentVariable("SECRET_KEY") ?? throw new Exception("SECRET_KEY cannot be empty");
 var deployUrl = Environment.GetEnvironmentVariable("DEPLOY_URL") ?? "http://localhost";
 
 builder.Configuration["JWT:Issuer"] = host;
 builder.Configuration["JWT:Audience"] = host;
 builder.Configuration["JWT:SigningKey"] = secretKey;
-builder.Configuration["ConnectionStrings:DefaultConnection"] = connectString;
+builder.Configuration["ConnectionStrings:DefaultConnection"] = sqlServerUrl;
 
 
 builder
+    .AddIPConf()
     .AddExceptionsConf() // Personaliza as exceções
     .AddDatabaseConf() // adiciona as configurações de conexão com o banco de dados
     .AddControllersConf() // Captura os controllers
@@ -36,8 +39,13 @@ builder
     .AddMapsterConf() // Adicionar o mapters que já configura os métodos de mapping Id = Id
     .AddSwaggerConf() // Configuração para colocar no swagger
     .AddRepositoriesConf() // Adiciona a injeção de dependências nos repositórios
-    .Services.AddScoped<ITokenService, TokenService>() // Estabelece as configurações para geração do token
 ;
+
+builder.Services.AddScoped<ITokenService, TokenService>(); // Estabelece as configurações para geração do token
+builder.Services.AddSingleton<IGeoIpService>(provider =>
+{
+    return new GeoIpService(geoIpPath);
+});
 
 // if (builder.Environment.EnvironmentName.Equals("Production"))
 // {
@@ -46,12 +54,14 @@ builder
 
 var app = builder.Build();
 
+app.UseForwardedHeaders();
 app
     .AddExceptionsConf() // personaliza as exceções
     .AddSwaggerConf(deployUrl) // configurações da documentação
     .AddControllersConf() // Mapeia os controllers para serem acessíveis via rota
     .UseMiddleware<TokenValidationMiddleware>() // Registra os middlewares
 ;
+
 
 app.Run();
 // Necessário para testes
