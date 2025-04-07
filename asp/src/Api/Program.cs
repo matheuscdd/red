@@ -10,6 +10,7 @@ using IoC.Exceptions;
 using IoC.Controllers;
 using IoC.Repositories;
 using IoC.Database;
+using IoC.IP;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,7 @@ builder.Configuration["ConnectionStrings:DefaultConnection"] = connectString;
 
 
 builder
+    .AddIPConf()
     .AddExceptionsConf() // Personaliza as exceções
     .AddDatabaseConf() // adiciona as configurações de conexão com o banco de dados
     .AddControllersConf() // Captura os controllers
@@ -46,6 +48,7 @@ builder
 
 var app = builder.Build();
 
+app.UseForwardedHeaders();
 app
     .AddExceptionsConf() // personaliza as exceções
     .AddSwaggerConf(deployUrl) // configurações da documentação

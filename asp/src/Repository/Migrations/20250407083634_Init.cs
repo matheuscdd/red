@@ -189,6 +189,7 @@ namespace Repository.Migrations
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Browser = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OS = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Origin = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LinkId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -208,8 +209,8 @@ namespace Repository.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "a0dd7a07-cf14-4897-940c-11a6421ef2fa", null, "Common", "COMMON" },
-                    { "def07449-3e35-436b-8470-8c530dd31e4e", null, "Admin", "ADMIN" }
+                    { "06071977-4fb4-4cad-a104-0ede49941c3a", null, "Common", "COMMON" },
+                    { "145ab671-664a-493d-8c69-fe171fce93d5", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(

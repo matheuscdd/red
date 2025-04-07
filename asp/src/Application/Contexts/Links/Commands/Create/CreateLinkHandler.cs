@@ -26,15 +26,22 @@ public class CreateLinkHandler : IRequestHandler<CreateLinkCommand, LinkDto>
         CancellationToken cancellationToken
     )
     {
-        var maskExists = await _linkRepository.CheckMaskExistsAsync(request.Mask, request.UserId, cancellationToken);
-        if (maskExists)
+        if (request.RandomMask)
         {
-            throw new ConflictCustomException("This shortcut already exists");
+            request.Mask = Guid.NewGuid().ToString()[..5];
+        }
+        else
+        {
+            var maskExists = await _linkRepository.CheckMaskExistsAsync(request.Mask, request.UserId, cancellationToken);
+            if (maskExists)
+            {
+                throw new ConflictCustomException("This mask already exists");
+            }
         }
 
         var entity = new Link(request.Mask, request.Destination, request.UserId);
         entity = await _linkRepository.CreateAsync(entity, cancellationToken);
-        entity = await _linkRepository.GetByIdAndUserAsync(entity.Id, entity.UserId, cancellationToken);
+        entity = await _linkRepository.GetByIdAndUserIdAsync(entity.Id, entity.UserId, cancellationToken);
         var dto = entity.Adapt<LinkDto>();
         return dto;
     }

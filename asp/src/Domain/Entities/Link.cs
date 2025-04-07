@@ -49,6 +49,15 @@ public class Link : Entity
         const string name = nameof(Mask);
         validateEmpty(mask, name);
         validateLength(mask!, name, 1, 150);
+        validateMaskFormat(mask!);
+    }
+
+    private void validateMaskFormat(string value)
+    {
+        if (!value.All(char.IsLetterOrDigit))
+        {
+            throw new ValidationCustomException($"{nameof(Mask)} only allow alphanumeric characters");
+        }
     }
 
     private void validateDestination(Uri? destination)

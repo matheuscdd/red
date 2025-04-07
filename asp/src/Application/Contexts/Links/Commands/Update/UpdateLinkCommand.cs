@@ -10,4 +10,5 @@ public class UpdateLinkCommand : IRequest<LinkDto>
     public string? Mask { get; set; }
     public Uri? Destination { get; set; }
     public string? UserId { get; set; }
+    public bool RandomMask { get; set; } = false;
 }

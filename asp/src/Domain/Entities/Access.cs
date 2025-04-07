@@ -14,7 +14,30 @@ public class Access : Entity
     public string City { get; private set; }
     public string Browser { get; private set; }
     public string OS { get; private set; }
+    public string? Origin { get; private set; }
     public DateTime CreatedAt { get; private set; } = DateTime.Now;
     public Guid LinkId { get; set; }
     public Link? Link { get; set; }
+
+    protected Access() {}
+    public Access(
+        IPAddress ip,
+        string country,
+        string region,
+        string city, 
+        string browser,
+        string os,
+        string? origin,
+        Guid linkId
+    )
+    {
+        Ip = ip;
+        Country = country;
+        Region = region;
+        City = city;
+        Browser = browser;
+        OS = os;
+        Origin = origin;
+        LinkId = linkId;
+    }
 }

@@ -54,6 +54,9 @@ namespace Repository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Origin")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Region")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -188,13 +191,13 @@ namespace Repository.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "def07449-3e35-436b-8470-8c530dd31e4e",
+                            Id = "145ab671-664a-493d-8c69-fe171fce93d5",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "a0dd7a07-cf14-4897-940c-11a6421ef2fa",
+                            Id = "06071977-4fb4-4cad-a104-0ede49941c3a",
                             Name = "Common",
                             NormalizedName = "COMMON"
                         });
