@@ -8,7 +8,8 @@ services:
     environment:
       HOST: "${HOST}"
       SECRET_KEY: "${SECRET_KEY}"
-      SQL_SERVER_URL: "${SQL_SERVER_URL}"
+      MSSQL_URL: "${MSSQL_URL}"
+      GEO_IP_PATH: "empty"
     networks:
       - net
     depends_on:
@@ -21,16 +22,20 @@ services:
       args:
         HOST: "${HOST}"
         SECRET_KEY: "${SECRET_KEY}"
-        SQL_SERVER_URL: "${SQL_SERVER_URL}"
-        GEO_IP_PATH: "${GEO_IP_PATH}"
+        MSSQL_URL: "${MSSQL_URL}"
+        GEO_IP_PATH: "/geoip/database/GeoLite2-City.mmdb"
+        GEO_IP_ACCOUNT_ID: "${GEO_IP_ACCOUNT_ID}"
+        GEO_IP_LICENSE_KEY: "${GEO_IP_LICENSE_KEY}"
     image: asp
-    ports:
-      - "8000:8000"
     environment:
       HOST: "${HOST}"
       SECRET_KEY: "${SECRET_KEY}"
-      SQL_SERVER_URL: "${SQL_SERVER_URL}"
-      GEO_IP_PATH: "${GEO_IP_PATH}"
+      MSSQL_URL: "${MSSQL_URL}"
+      GEO_IP_PATH: "/geoip/database/GeoLite2-City.mmdb"
+      GEO_IP_ACCOUNT_ID: "${GEO_IP_ACCOUNT_ID}"
+      GEO_IP_LICENSE_KEY: "${GEO_IP_LICENSE_KEY}"
+    volumes:
+      - ./asp/src:/app/src
     networks:
       - net
     depends_on:
@@ -44,10 +49,29 @@ services:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD}"
       MSSQL_TLS_ENFORCE: 0
-    ports:
-      - "1433:1433"
     volumes:
       - storage-mssql:/var/opt/mssql
+    networks:
+      - net
+    ports:
+      - "1433:1433"
+  nginx:
+    restart: always
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.dev
+    image: nginx
+    # Precisa fazer isso para não entrar em conflito com as portas do nginx do signoz
+    ports:
+      - "81:80"
+      - "444:443"
+    environment:
+      DOMAIN: "${DOMAIN}"
+      EMAIL_SUPPORT: "${EMAIL_SUPPORT}"
+      STAGING_URL: "${STAGING_URL}"
+    depends_on:
+      - mssql
+      - asp
     networks:
       - net
 

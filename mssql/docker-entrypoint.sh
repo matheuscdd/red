@@ -7,12 +7,13 @@ done
 
 readonly cmd="
 GO
-IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = N'finshark')
+IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = N'red')
 BEGIN
-  CREATE DATABASE finshark;
+  CREATE DATABASE red;
 END;
 GO
 "
 
 sqlcmd=$(find / -name sqlcmd 2>/dev/null)
 "$sqlcmd" -S 'localhost,1433' -U sa -P "$MSSQL_SA_PASSWORD" -Q "$cmd" -C
+"$sqlcmd" -S 'localhost,1433' -U sa -P "$MSSQL_SA_PASSWORD" -Q "SELECT name FROM sys.databases;" -C

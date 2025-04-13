@@ -16,7 +16,7 @@ using IoC.IP;
 var builder = WebApplication.CreateBuilder(args);
 
 // carrega variáveis de ambiente
-var sqlServerUrl = Environment.GetEnvironmentVariable("SQL_SERVER_URL") ?? throw new Exception("SQL_SERVER_URL cannot be empty");
+var sqlServerUrl = Environment.GetEnvironmentVariable("MSSQL_URL") ?? throw new Exception("MSSQL_URL cannot be empty");
 var geoIpPath = Environment.GetEnvironmentVariable("GEO_IP_PATH") ?? throw new Exception("GEO_IP_PATH cannot be empty");
 var host = Environment.GetEnvironmentVariable("HOST") ?? throw new Exception("HOST cannot be empty");
 var secretKey = Environment.GetEnvironmentVariable("SECRET_KEY") ?? throw new Exception("SECRET_KEY cannot be empty");
@@ -55,6 +55,9 @@ builder.Services.AddSingleton<IGeoIpService>(provider =>
 var app = builder.Build();
 
 app.UseForwardedHeaders();
+app.UseAuthentication();
+app.UseAuthorization();
+
 app
     .AddExceptionsConf() // personaliza as exceções
     .AddSwaggerConf(deployUrl) // configurações da documentação
