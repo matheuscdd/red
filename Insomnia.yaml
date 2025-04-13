@@ -84,7 +84,7 @@ collection:
         meta:
           id: req_8bbd72ea0e844f2b93501b0cf574f37e
           created: 1742304249452
-          modified: 1743938871343
+          modified: 1744540667163
           isPrivate: false
           sortKey: -1742296766904
         method: POST
@@ -93,8 +93,12 @@ collection:
           text: |-
             {
             	"mask": "{% faker 'randomLoremWord' %}",
-            	"destination": "{% faker 'randomUrl' %}"
+            	"destination": "https://www.google.com.br",
+            	"randomMask": true
             }
+        parameters:
+          - id: pair_21313a6188d044529d239b62104eba12
+            disabled: false
         headers:
           - name: Content-Type
             value: application/json
@@ -111,12 +115,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.baseURL }}/api/links/private/878e9ef3-9e8e-4628-3f98-08dd74fe0657"
+      - url: "{{ _.baseURL }}/api/links/private/5d1b72f5-9617-4283-ac86-08dd75b309aa"
         name: update
         meta:
           id: req_468e8e6be3d943b2a57afabe9405ddd3
           created: 1742309780677
-          modified: 1743942503284
+          modified: 1744017207352
           isPrivate: false
           sortKey: -1742296766879
         method: PUT
@@ -124,8 +128,9 @@ collection:
           mimeType: application/json
           text: |-
             {
-            	"mask": "{% faker 'randomLoremWord' %}",
-            	"destination": "{% faker 'randomUrl' %}"
+            	"mask": "derideo",
+            	"destination": "{% faker 'randomUrl' %}",
+            	"randomMask": true
             }
         headers:
           - name: Content-Type
@@ -171,7 +176,7 @@ collection:
         meta:
           id: req_9bbacdea469346698d0aee1d112edc92
           created: 1743938879502
-          modified: 1743938912964
+          modified: 1744540702704
           isPrivate: false
           sortKey: -1742296766891.5
         method: POST
@@ -180,8 +185,12 @@ collection:
           text: |-
             {
             	"mask": "{% faker 'randomLoremWord' %}",
-            	"destination": "{% faker 'randomUrl' %}"
+            	"destination": "https://biblia.com.br",
+            	"randomMask": false
             }
+        parameters:
+          - id: pair_875338c969b340dea3d03f76c641f1bf
+            disabled: false
         headers:
           - name: Content-Type
             value: application/json
@@ -211,7 +220,7 @@ collection:
         meta:
           id: req_fe67215df60a47909e4295c27425d634
           created: 1742404861746
-          modified: 1743940329367
+          modified: 1744015897994
           isPrivate: false
           sortKey: -1742404865590
         method: POST
@@ -219,7 +228,7 @@ collection:
           mimeType: application/json
           text: |-
             {
-            	"username": "{% faker 'randomLoremWord' %}sasdas",
+            	"username": "bobert",
             	"password": "aUbcdefghis1ajjR#das",
             	"email": "{% faker 'randomEmail' %}"
             }
@@ -228,30 +237,6 @@ collection:
             value: application/json
           - name: User-Agent
             value: insomnia/8.6.1
-        settings:
-          renderRequestBody: true
-          encodeUrl: true
-          followRedirects: global
-          cookies:
-            send: true
-            store: true
-          rebuildPath: true
-      - url: "{{ _.baseURL }}/api/users/6BAB4799-0837-46CD-A78B-CA6B7DC366CB"
-        name: find
-        meta:
-          id: req_af86d986fbf64b74b82d00e2d12e4991
-          created: 1742415337931
-          modified: 1743940282943
-          isPrivate: false
-          sortKey: -1742367088438
-        method: GET
-        headers:
-          - name: User-Agent
-            value: insomnia/8.6.1
-        authentication:
-          type: bearer
-          token: "{{ _.token }}"
-          disabled: true
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -354,6 +339,109 @@ collection:
           isPrivate: false
           sortKey: -1742357644150
         method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/8.6.1
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+          disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.baseURL }}/api/users/6BAB4799-0837-46CD-A78B-CA6B7DC366CB"
+        name: find
+        meta:
+          id: req_76d855384ee64aecb431d947c9cf3ff9
+          created: 1744011695438
+          modified: 1744011695438
+          isPrivate: false
+          sortKey: -1742362366294
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/8.6.1
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+          disabled: true
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: accesses
+    meta:
+      id: fld_2edca7c2452541c8b1b9bd57e7aea374
+      created: 1744011660563
+      modified: 1744011709446
+      sortKey: -1744011660963
+    children:
+      - url: "{{ _.baseURL }}/api/accesses/private/bobert/ab0cf"
+        name: find private
+        meta:
+          id: req_af86d986fbf64b74b82d00e2d12e4991
+          created: 1742415337931
+          modified: 1744540214573
+          isPrivate: false
+          sortKey: -1744011722358
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/8.6.1
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+          disabled: true
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.baseURL }}/api/accesses/public/dolore?origin=name"
+        name: find public
+        meta:
+          id: req_136369cb35e6405abfcaf15b99d62372
+          created: 1744013505891
+          modified: 1744506308008
+          isPrivate: false
+          sortKey: -1743208293974
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/8.6.1
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+          disabled: true
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.baseURL }}/api/accesses/links/7b633623-079c-4208-7e81-08dd7a76095f"
+        name: list
+        meta:
+          id: req_ca30a4da2f3e44358096f11d6ae91729
+          created: 1744540229314
+          modified: 1744540260981
+          isPrivate: false
+          sortKey: -1742806579782
+        method: GET
         headers:
           - name: User-Agent
             value: insomnia/8.6.1

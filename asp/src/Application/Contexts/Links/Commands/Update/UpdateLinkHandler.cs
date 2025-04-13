@@ -24,10 +24,21 @@ public class UpdateLinkHandler : IRequestHandler<UpdateLinkCommand, LinkDto>
         CancellationToken cancellationToken
     )
     {
-        var entityStorage = await _linkRepository.GetByIdAndUserAsync(request.Id, request.UserId, cancellationToken);
+        if (request.RandomMask)
+        {
+            request.Mask = Guid.NewGuid().ToString()[..5];
+        }
+
+        var entityStorage = await _linkRepository.GetByIdAndUserIdAsync(request.Id, request.UserId, cancellationToken);
         if (entityStorage == null)
         {
             throw new NotFoundCustomException("Link not found");
+        }
+
+        var maskStorage = await _linkRepository.GetByMaskAndUserIdAsync(request.Mask!, request.UserId!, cancellationToken);
+        if (maskStorage != null && maskStorage.Id != request.Id)
+        {
+            throw new ConflictCustomException("This mask already exists for another link");
         }
 
         var entityRequest = new Link(request.Mask, request.Destination, request.UserId);

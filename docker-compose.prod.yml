@@ -6,9 +6,9 @@ services:
       dockerfile: Dockerfile.aux
     image: aux
     environment:
-      Host: "${Host}"
-      SecretKey: "${SecretKey}"
-      DefaultConnection: "${DefaultConnection}"
+      HOST: "${HOST}"
+      SECRET_KEY: "${SECRET_KEY}"
+      SQL_SERVER_URL: "${SQL_SERVER_URL}"
     networks:
       - net
     depends_on:
@@ -19,16 +19,18 @@ services:
       context: ./asp
       dockerfile: Dockerfile.prod
       args:
-        Host: "${Host}"
-        SecretKey: "${SecretKey}"
-        DefaultConnection: "${DefaultConnection}"
+        HOST: "${HOST}"
+        SECRET_KEY: "${SECRET_KEY}"
+        SQL_SERVER_URL: "${SQL_SERVER_URL}"
+        GEO_IP_PATH: "${GEO_IP_PATH}"
     image: asp
     environment:
-      Host: "${Host}"
-      SecretKey: "${SecretKey}"
-      DefaultConnection: "${DefaultConnection}"
+      HOST: "${HOST}"
+      SECRET_KEY: "${SECRET_KEY}"
+      SQL_SERVER_URL: "${SQL_SERVER_URL}"
       DEPLOY_URL: "${DEPLOY_URL}"
-      SignozUrl: "http://signoz-otel-collector:4317"
+      GEO_IP_PATH: "${GEO_IP_PATH}"
+      SIGNOZ_URL: "http://signoz-otel-collector:4317"
     networks:
       - net
     depends_on:
