@@ -11,14 +11,10 @@ public static class BuilderIP
      {
         builder.Services.Configure<ForwardedHeadersOptions>(options =>
         {
-            options.ForwardedHeaders = 
-                ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
 
-            // Se quiser permitir todos os proxies (dev only):
-            // options.KnownNetworks.Clear(); // Remove restrições de IP
+            options.KnownNetworks.Clear();
             options.KnownProxies.Clear();
-            options.KnownNetworks.Add(new Microsoft.AspNetCore.HttpOverrides.IPNetwork(IPAddress.Parse("192.168.1.107"), 16)); // sua rede interna
-
         }); 
 
         return builder;

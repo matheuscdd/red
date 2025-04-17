@@ -8,7 +8,8 @@ services:
     environment:
       HOST: "${HOST}"
       SECRET_KEY: "${SECRET_KEY}"
-      SQL_SERVER_URL: "${SQL_SERVER_URL}"
+      MSSQL_URL: "${MSSQL_URL}"
+      GEO_IP_PATH: "empty"
     networks:
       - net
     depends_on:
@@ -21,15 +22,19 @@ services:
       args:
         HOST: "${HOST}"
         SECRET_KEY: "${SECRET_KEY}"
-        SQL_SERVER_URL: "${SQL_SERVER_URL}"
-        GEO_IP_PATH: "${GEO_IP_PATH}"
+        MSSQL_URL: "${MSSQL_URL}"
+        GEO_IP_PATH: "/geoip/database/GeoLite2-City.mmdb"
+        GEO_IP_ACCOUNT_ID: "${GEO_IP_ACCOUNT_ID}"
+        GEO_IP_LICENSE_KEY: "${GEO_IP_LICENSE_KEY}"
     image: asp
     environment:
       HOST: "${HOST}"
       SECRET_KEY: "${SECRET_KEY}"
-      SQL_SERVER_URL: "${SQL_SERVER_URL}"
+      MSSQL_URL: "${MSSQL_URL}"
       DEPLOY_URL: "${DEPLOY_URL}"
-      GEO_IP_PATH: "${GEO_IP_PATH}"
+      GEO_IP_PATH: "/geoip/database/GeoLite2-City.mmdb"
+      GEO_IP_ACCOUNT_ID: "${GEO_IP_ACCOUNT_ID}"
+      GEO_IP_LICENSE_KEY: "${GEO_IP_LICENSE_KEY}"
       SIGNOZ_URL: "http://signoz-otel-collector:4317"
     networks:
       - net

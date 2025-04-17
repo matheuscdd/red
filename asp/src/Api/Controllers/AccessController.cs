@@ -39,8 +39,9 @@ public class AccessController : ControllerBase
             os += $" {client.OS.Major}";
         }
         var browser = client.UA.Family;
-        var ip = HttpContext.Connection.RemoteIpAddress;
-        
+        var forwardedFor = Request.Headers["X-Forwarded-For"].FirstOrDefault()?.Split(',').FirstOrDefault();
+        var ip = IPAddress.Parse(forwardedFor) ?? HttpContext.Connection.RemoteIpAddress;
+        Console.WriteLine(ip);
         var response = await _mediator.Send(new CreateAccessCommand{
             Ip = ip!,
             Mask = mask, 
